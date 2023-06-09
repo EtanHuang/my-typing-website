@@ -1,23 +1,172 @@
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
+const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture', 'is', 'you', 'where', 'when'
+, 'state', 'me', 'how', 'open', 'sometimes', 'she', 'he', 'like', 'who', 'what', 'kind', 'develop', 'interest' 
+, 'without', 'number', 'time', 'end', 'start', 'increase', 'begin', 'but', 'look', 'book', 'picture', 'zebra', 'dog',
+'cat', 'animal', 'cube', 'laptop', 'how', 'is', 'but', 'far', 'far', 'far', 'found', 'should', 'part', 'how', 'basic', 
+'to', 'man', 'right', 'left', 'odd', 'even', 'our', 'us', 'even', 'go', 'go', 'go', 'go', 'go', 'been']
+
 function App() {
+  const [wordlist, setWordlist] = useState([]); // the current word list 
+  const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
+  const [userInput, setUserInput] = useState(''); // user's input in the box, reset when pressed space bar 
+  const [testActive, setTestActive] = useState(false); // true if test is running, false otherwise (set to true when timer starts, false when timer stops), idk if I will need this 
+  const [correctCount, setCorrectCount] = useState(0);
+  const [wrongCount, setWrongCount] = useState(0);
+
+  const [timer, setTimer] = useState(60);
+  const [isRunning, setIsRunning] = useState(false);
+  const [correct, setCorrect] = useState(false); //determines whether current user input matches current word 
+  const [wpm, setWpm] = useState(0);
+
+  useEffect(() => {
+    let interval;
+    if (isRunning && timer > 0) {
+        interval = setInterval(() => {
+        setTimer((timer) => timer - 1);
+      }, 1000);
+    }
+
+    if (timer === 0) {
+      setIsRunning(false);
+      setTestActive(false);
+      clearInterval(interval);
+      calculateWPM();
+    }
+
+    return () => {
+      clearInterval(interval); // Clear the interval when the component unmounts
+    };
+  }, [isRunning, timer]); // runs when isRunning changes from true to false and runs whenever timer decreases by 1 until 0
+
+  const handleStart = () => {
+    setIsRunning(true);
+    setTestActive(true);
+  };
+
+  function handleRestart() {
+    setTimer(60);
+    setIsRunning(false);
+    setTestActive(false);
+    setcurrentWordIndex(0);
+    setCorrectCount(0);
+    setWrongCount(0);
+    generateWords();
+    setUserInput("");
+  }
+
+  useEffect(() => {
+    generateWords();
+  }, []);
+
+  function calculateWPM() {
+    let charCount = 0;
+    for (let i = 0; i < currentWordIndex; i++) {
+      charCount += wordlist[i].length;
+    }
+    charCount += currentWordIndex; // adds spaces grosswpm = (all typed entries / 5) / time (min) 
+    let grossWpm = Math.round(charCount / 5);
+    let netWpm = grossWpm - wrongCount; // netwpm = grosswpm - (wrong words / time (min))
+    console.log(netWpm);
+    setWpm(netWpm);
+  }
+
+  function generateWords() {
+    const generatedWords = [];
+    for (let i = 0; i < 200; i++) {
+      let index = Math.floor(Math.random() * words.length);
+      generatedWords.push(words[index]);
+    }
+    setWordlist(generatedWords);
+  }
+
+  let newWordList = wordlist.map((word, index) => {
+    return (
+      <span key={index} className = {(index === currentWordIndex) ? 'text highlight' : 'text'}>
+        {word}
+      </span>
+    );
+  });
+
+  let newerWordList = newWordList.map((element, index) => (
+      <React.Fragment key={index}>
+        {element}{" "}
+      </React.Fragment>
+    ));
+
+  function handleUserInput(e) {
+    if (timer === 60 && !testActive) {
+      handleStart();
+    } else if (timer === 0) {
+      //console.log("hi");
+      e.preventDefault();
+      return;
+    }
+    setUserInput(e.target.value.trim());
+  }
+
+  function checkWord() {
+      if (wordlist[currentWordIndex] === userInput) {
+        setCorrect(true);
+        setCorrectCount(correctCount + 1);
+        //newWordList[currentWordIndex].props.className.append('right');
+      } else {
+        setCorrect(false);
+        setWrongCount(wrongCount + 1);
+        //newWordList[currentWordIndex].props.className.append('wrong');
+      }
+  }
+
+  function handleSpace(e) {
+    if (userInput.trim() !== '' && e.key === ' ') { 
+      e.preventDefault();
+      setUserInput('');
+      checkWord();
+      setcurrentWordIndex(currentWordIndex + 1);
+    }
+  }
+
+  function preventCopyPaste(e) {
+    e.preventDefault();
+  }
+  
+  document.body.style.backgroundColor = "#17a2b8";
+
+  function RestartButton() {
+    return (
+      <button onClick = {handleRestart}
+              className = "restart-button">
+        Restart
+      </button>
+    )
+  }
+
+  // function WPMDisplay() {
+  //   return (
+  //     <text className = 'center'>You got {wpm} WPM.</text>
+  //   )
+  // }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className = 'container'>
+        <div className = 'text-box'>
+          {newerWordList}
+          <input
+              type = "text"
+              className = "input-box"
+              placeholder = "Enter here to type..."
+              value = {userInput}
+              onChange = {handleUserInput}
+              onPaste = {preventCopyPaste}
+              onKeyDown = {handleSpace}>
+            </input>
+            {timer}
+          <RestartButton />
+          </div>
+        </div>
     </div>
   );
 }
