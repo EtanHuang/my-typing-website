@@ -2,11 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .text-box {
   background-color: white;
   width: 770px;
+  height: 350px;
   align-items: center; 
   padding: 30px;
   border-radius: 20px;
@@ -42,3 +44,12 @@
   border-radius: none;
 }
 
+.input-box {
+  position: absolute;
+  width: 600px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  bottom: 250px;
+}

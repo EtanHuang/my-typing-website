@@ -8,6 +8,7 @@ const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture'
 'to', 'man', 'right', 'left', 'odd', 'even', 'our', 'us', 'even', 'go', 'go', 'go', 'go', 'go', 'been']
 
 function App() {
+  const totalTime = 60;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
   const [userInput, setUserInput] = useState(''); // user's input in the box, reset when pressed space bar 
@@ -15,7 +16,7 @@ function App() {
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
 
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(totalTime);
   const [isRunning, setIsRunning] = useState(false);
   const [correct, setCorrect] = useState(false); //determines whether current user input matches current word 
   const [wpm, setWpm] = useState(0);
@@ -26,6 +27,7 @@ function App() {
         interval = setInterval(() => {
         setTimer((timer) => timer - 1);
       }, 1000);
+      calculateWPM();
     }
 
     if (timer === 0) {
@@ -46,12 +48,13 @@ function App() {
   };
 
   function handleRestart() {
-    setTimer(60);
+    setTimer(totalTime);
     setIsRunning(false);
     setTestActive(false);
     setcurrentWordIndex(0);
     setCorrectCount(0);
     setWrongCount(0);
+    setWpm(0);
     generateWords();
     setUserInput("");
   }
@@ -66,9 +69,11 @@ function App() {
       charCount += wordlist[i].length;
     }
     charCount += currentWordIndex; // adds spaces grosswpm = (all typed entries / 5) / time (min) 
-    let grossWpm = Math.round(charCount / 5);
-    let netWpm = grossWpm - wrongCount; // netwpm = grosswpm - (wrong words / time (min))
-    console.log(netWpm);
+    let netWpm = 0;
+    if (timer !== totalTime) {
+      let grossWpm = Math.round(charCount / 5) / ((totalTime - timer) / totalTime);
+      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / totalTime))); // netwpm = grosswpm - (wrong words / time (min))
+    }
     setWpm(netWpm);
   }
 
@@ -99,7 +104,6 @@ function App() {
     if (timer === 60 && !testActive) {
       handleStart();
     } else if (timer === 0) {
-      //console.log("hi");
       e.preventDefault();
       return;
     }
@@ -142,18 +146,37 @@ function App() {
     )
   }
 
-  // function WPMDisplay() {
-  //   return (
-  //     <text className = 'center'>You got {wpm} WPM.</text>
-  //   )
-  // }
+  function WPMDisplay() {
+    return (
+      <text className = 'center'>You got {wpm} WPM.</text>
+    )
+  }
 
+  const testInfo = [
+    { name: 'Time Left', displayvalue: timer, id: 1 },
+    { name: 'Correct', displayvalue: correctCount, id: 2 },
+    { name: 'Wrong', displayvalue: wrongCount, id: 3 },
+    { name: 'WPM', displayvalue: wpm, id: 4 }];
+
+ function InfoContainer() {
+    return (
+      testInfo.map(item => 
+        <li 
+          key = {item.id}>
+            {item.name}:
+            {item.displayvalue}
+        </li>)
+     )
+  };
 
   return (
     <div>
       <div className = 'container'>
         <div className = 'text-box'>
           {newerWordList}
+          <InfoContainer className = 'info-container'/>
+          <RestartButton className = 'restart-button' />  
+        </div>   
           <input
               type = "text"
               className = "input-box"
@@ -162,10 +185,7 @@ function App() {
               onChange = {handleUserInput}
               onPaste = {preventCopyPaste}
               onKeyDown = {handleSpace}>
-            </input>
-            {timer}
-          <RestartButton />
-          </div>
+            </input>  
         </div>
     </div>
   );
