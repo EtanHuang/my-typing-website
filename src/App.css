@@ -42,6 +42,7 @@
   background-color: #17a2b8;
   font-family: 'poppins', sans-serif;
   border-radius: none;
+  cursor: pointer;
 }
 
 .input-box {
@@ -52,4 +53,5 @@
   justify-content: center;
   border-radius: 5px;
   bottom: 250px;
+  font-size: 40px;
 }

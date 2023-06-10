@@ -8,7 +8,7 @@ const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture'
 'to', 'man', 'right', 'left', 'odd', 'even', 'our', 'us', 'even', 'go', 'go', 'go', 'go', 'go', 'been']
 
 function App() {
-  const totalTime = 60;
+  const totalTime = 15;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
   const [userInput, setUserInput] = useState(''); // user's input in the box, reset when pressed space bar 
@@ -70,9 +70,9 @@ function App() {
     }
     charCount += currentWordIndex; // adds spaces grosswpm = (all typed entries / 5) / time (min) 
     let netWpm = 0;
-    if (timer !== totalTime) {
-      let grossWpm = Math.round(charCount / 5) / ((totalTime - timer) / totalTime);
-      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / totalTime))); // netwpm = grosswpm - (wrong words / time (min))
+    if (timer !== totalTime) { // prevents division by 0 
+      let grossWpm = Math.round(charCount / 5) / ((totalTime - timer) /  60);
+      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / 60))); // netwpm = grosswpm - (wrong words / time (min))
     }
     setWpm(netWpm);
   }
@@ -101,7 +101,7 @@ function App() {
     ));
 
   function handleUserInput(e) {
-    if (timer === 60 && !testActive) {
+    if (timer === totalTime && !testActive) {
       handleStart();
     } else if (timer === 0) {
       e.preventDefault();
@@ -146,12 +146,6 @@ function App() {
     )
   }
 
-  function WPMDisplay() {
-    return (
-      <text className = 'center'>You got {wpm} WPM.</text>
-    )
-  }
-
   const testInfo = [
     { name: 'Time Left', displayvalue: timer, id: 1 },
     { name: 'Correct', displayvalue: correctCount, id: 2 },
@@ -180,7 +174,7 @@ function App() {
           <input
               type = "text"
               className = "input-box"
-              placeholder = "Enter here to type..."
+              //placeholder = "Enter here to type..."
               value = {userInput}
               onChange = {handleUserInput}
               onPaste = {preventCopyPaste}
