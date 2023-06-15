@@ -162,6 +162,7 @@ function App() {
       <ul>
         {testInfo.map(item => 
           <li 
+            style = {{listStyleType: 'none'}}
             key = {item.id}>
               {item.name}:
               {item.displayvalue}

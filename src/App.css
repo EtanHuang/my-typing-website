@@ -8,7 +8,7 @@
 .text-box {
   background-color: white;
   width: 770px;
-  height: 500px;
+  height: 550px;
   padding: 30px;
   border-radius: 20px;
   border: 2px solid #ccc;
@@ -57,9 +57,15 @@
 }
 
 .info-container {
+  position: fixed;
   display: flex;
+  bottom: 150px;
   width: 100%;
   justify-content: space-between;
+}
+
+.info-container-text {
+  list-style: none;
 }
 
 .input-restart-container {
