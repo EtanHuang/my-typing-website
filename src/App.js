@@ -5,14 +5,14 @@ const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture'
 , 'state', 'me', 'how', 'open', 'sometimes', 'she', 'he', 'like', 'who', 'what', 'kind', 'develop', 'interest' 
 , 'without', 'number', 'time', 'end', 'start', 'increase', 'begin', 'but', 'look', 'book', 'picture', 'zebra', 'dog',
 'cat', 'animal', 'cube', 'laptop', 'how', 'is', 'but', 'far', 'far', 'far', 'found', 'should', 'part', 'how', 'basic', 
-'to', 'man', 'right', 'left', 'odd', 'even', 'our', 'us', 'even', 'go', 'go', 'go', 'go', 'go', 'been']
+'to', 'man', 'right', 'left', 'odd', 'even', 'our', 'us', 'even', 'go', 'go', 'go', 'been']
 
 function App() {
-  const totalTime = 15;
+  const totalTime = 60;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
   const [userInput, setUserInput] = useState(''); // user's input in the box, reset when pressed space bar 
-  const [testActive, setTestActive] = useState(false); // true if test is running, false otherwise (set to true when timer starts, false when timer stops), idk if I will need this 
+  const [testActive, setTestActive] = useState(false); // true if test is running, false otherwise 
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
 
@@ -68,11 +68,13 @@ function App() {
     for (let i = 0; i < currentWordIndex; i++) {
       charCount += wordlist[i].length;
     }
-    charCount += currentWordIndex; // adds spaces grosswpm = (all typed entries / 5) / time (min) 
+    charCount += currentWordIndex; // adds spaces. 
+    // grosswpm = (all typed characters / 5) / time (min) 
+    // netwpm = grosswpm - (wrong words / time (min))
     let netWpm = 0;
     if (timer !== totalTime) { // prevents division by 0 
       let grossWpm = Math.round(charCount / 5) / ((totalTime - timer) /  60);
-      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / 60))); // netwpm = grosswpm - (wrong words / time (min))
+      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / 60))); 
     }
     setWpm(netWpm);
   }
@@ -101,6 +103,9 @@ function App() {
     ));
 
   function handleUserInput(e) {
+    if (!testActive && e.target.value == " ") {
+      return;
+    }
     if (timer === totalTime && !testActive) {
       handleStart();
     } else if (timer === 0) {
@@ -154,12 +159,14 @@ function App() {
 
  function InfoContainer() {
     return (
-      testInfo.map(item => 
-        <li 
-          key = {item.id}>
-            {item.name}:
-            {item.displayvalue}
-        </li>)
+      <ul>
+        {testInfo.map(item => 
+          <li 
+            key = {item.id}>
+              {item.name}:
+              {item.displayvalue}
+          </li>)}
+        </ul>
      )
   };
 
@@ -167,21 +174,26 @@ function App() {
     <div>
       <div className = 'container'>
         <div className = 'text-box'>
-          {newerWordList}
-          <InfoContainer className = 'info-container'/>
-          <RestartButton className = 'restart-button' />  
-        </div>   
+          {newerWordList}        
+          <div className = 'info-container'>
+            <InfoContainer />
+          </div>
+        </div>     
+      </div>    
+      <div className = 'input-restart-container'>
           <input
-              type = "text"
-              className = "input-box"
-              //placeholder = "Enter here to type..."
-              value = {userInput}
-              onChange = {handleUserInput}
-              onPaste = {preventCopyPaste}
-              onKeyDown = {handleSpace}>
-            </input>  
-        </div>
-    </div>
+                type = "text"
+                className = "input-box"
+                //placeholder = "Enter here to type..."
+                value = {userInput}
+                onChange = {handleUserInput}
+                onPaste = {preventCopyPaste}
+                onKeyDown = {handleSpace}>
+          </input>  
+          <RestartButton className = 'restart-button' />
+
+        </div> 
+    </div> 
   );
 }
 

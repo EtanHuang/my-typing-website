@@ -8,13 +8,12 @@
 .text-box {
   background-color: white;
   width: 770px;
-  height: 350px;
-  align-items: center; 
+  height: 500px;
   padding: 30px;
   border-radius: 20px;
   border: 2px solid #ccc;
   outline: 20px solid white;
-  margin: auto;
+  margin: 0;
 }
 
 .highlight {
@@ -24,7 +23,7 @@
 }
 
 .text {
-  font-size: 20px;
+  font-size: 25px;
   font-family: 'poppins', sans-serif;
 }
 
@@ -40,18 +39,33 @@
 
 .restart-button {
   background-color: #17a2b8;
+  color: white;
   font-family: 'poppins', sans-serif;
   border-radius: none;
+  border-color: none;
   cursor: pointer;
+  padding: 3px;
+  height:40px;
+  width: 100px;
 }
 
 .input-box {
-  position: absolute;
   width: 600px;
   height: 40px;
-  align-items: center;
-  justify-content: center;
   border-radius: 5px;
-  bottom: 250px;
   font-size: 40px;
+}
+
+.info-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.input-restart-container {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
