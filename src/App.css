@@ -58,9 +58,9 @@
 
 .info-container {
   position: fixed;
-  display: flex;
+  align-items: center;
   bottom: 150px;
-  width: 100%;
+  width: auto;
   justify-content: space-between;
 }
 

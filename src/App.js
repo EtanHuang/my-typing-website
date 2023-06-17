@@ -9,6 +9,7 @@ const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture'
 
 function App() {
   const totalTime = 60;
+  const testLength = 200;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
   const [userInput, setUserInput] = useState(''); // user's input in the box, reset when pressed space bar 
@@ -81,7 +82,7 @@ function App() {
 
   function generateWords() {
     const generatedWords = [];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < testLength; i++) {
       let index = Math.floor(Math.random() * words.length);
       generatedWords.push(words[index]);
     }
@@ -128,6 +129,9 @@ function App() {
   }
 
   function handleSpace(e) {
+    // if(currentWordIndex === 200) {
+    //   setcurrentWordIndex(0);
+    // }
     if (userInput.trim() !== '' && e.key === ' ') { 
       e.preventDefault();
       setUserInput('');
@@ -159,7 +163,7 @@ function App() {
 
  function InfoContainer() {
     return (
-      <ul>
+      <ul className = 'info-container'>
         {testInfo.map(item => 
           <li 
             style = {{listStyleType: 'none'}}
@@ -176,10 +180,9 @@ function App() {
       <div className = 'container'>
         <div className = 'text-box'>
           {newerWordList}        
-          <div className = 'info-container'>
-            <InfoContainer />
-          </div>
-        </div>     
+            
+        </div>    
+        <InfoContainer /> 
       </div>    
       <div className = 'input-restart-container'>
           <input
