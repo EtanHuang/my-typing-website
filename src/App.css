@@ -61,16 +61,10 @@
   align-items: center;
   align-content: center;
   justify-content: space-between;
-}
-
-.info-container ul {
-  margin: 0;
+  padding-left: 0;
 }
 
 
-.info-container-text {
-  list-style: none;
-}
 
 .input-restart-container {
   width: 100%;
