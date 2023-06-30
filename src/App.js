@@ -90,8 +90,15 @@ function App() {
   }
 
   let newWordList = wordlist.map((word, index) => {
+    let wordClassName = (index === currentWordIndex) ? 'text highlight' : 'text';
+      if (index === currentWordIndex - 1 && correct) {
+        wordClassName = 'text right';
+      } else if (index === currentWordIndex - 1 && !correct) {
+        wordClassName = 'text wrong';
+      }
     return (
-      <span key={index} className = {(index === currentWordIndex) ? 'text highlight' : 'text'}>
+      <span key = {index} 
+            className = {wordClassName}>
         {word}
       </span>
     );
@@ -179,10 +186,10 @@ function App() {
     <div>
       <div className = 'container'>
         <div className = 'text-box'>
-          {newerWordList}        
-            
-        </div>    
-        <InfoContainer /> 
+          {newerWordList}     
+          <InfoContainer /> 
+        </div>  
+
       </div>    
       <div className = 'input-restart-container'>
           <input

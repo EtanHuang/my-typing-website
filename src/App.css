@@ -28,12 +28,12 @@
 }
 
 .right {
-  font-size: 20px;
-  color: greenyellow;
+  font-size: 25px;
+  color: #028a0f;
 }
 
 .wrong {
-  font-size: 20px;
+  font-size: 25px;
   color: red;
 }
 
@@ -57,12 +57,16 @@
 }
 
 .info-container {
-  position: fixed;
+  display: flex;
   align-items: center;
-  bottom: 150px;
-  width: auto;
+  align-content: center;
   justify-content: space-between;
 }
+
+.info-container ul {
+  margin: 0;
+}
+
 
 .info-container-text {
   list-style: none;
