@@ -173,10 +173,13 @@ function App() {
       <ul className = 'info-container'>
         {testInfo.map(item => 
           <li 
-            style = {{listStyleType: 'none'}}
+            style = {{listStyleType: 'none',
+                      fontFamily: 'sans-serif',
+                      fontSize: 23}}
             key = {item.id}>
               {item.name}:
-              {item.displayvalue}
+              {" "}
+              <strong>{item.displayvalue}</strong>
           </li>)}
         </ul>
      )

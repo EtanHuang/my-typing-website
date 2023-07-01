@@ -57,11 +57,14 @@
 }
 
 .info-container {
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
   display: flex;
   align-items: center;
   align-content: center;
   justify-content: space-between;
-  padding-left: 0;
+  padding-left: 100px;
+  padding-right: 100px;
 }
 
 
