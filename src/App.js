@@ -192,7 +192,6 @@ function App() {
           {newerWordList}     
           <InfoContainer /> 
         </div>  
-
       </div>    
       <div className = 'input-restart-container'>
           <input
@@ -205,7 +204,6 @@ function App() {
                 onKeyDown = {handleSpace}>
           </input>  
           <RestartButton className = 'restart-button' />
-
         </div> 
     </div> 
   );
