@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/fun-typing-website/static/css/main.2e4c313c.css",
+    "main.js": "/fun-typing-website/static/js/main.aacca826.js",
+    "index.html": "/fun-typing-website/index.html",
+    "main.2e4c313c.css.map": "/fun-typing-website/static/css/main.2e4c313c.css.map",
+    "main.aacca826.js.map": "/fun-typing-website/static/js/main.aacca826.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2e4c313c.css",
+    "static/js/main.aacca826.js"
+  ]
+}
