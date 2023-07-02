@@ -74,8 +74,13 @@ function App() {
     // netwpm = grosswpm - (wrong words / time (min))
     let netWpm = 0;
     if (timer !== totalTime) { // prevents division by 0 
-      let grossWpm = Math.round(charCount / 5) / ((totalTime - timer) /  60);
-      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / 60))); 
+      grossWpm = Math.round(((charCount + totalWordsTyped) / 5) / ((totalTime - timer) /  totalTime));
+       console.log("gross wpm " + grossWpm);
+       console.log("charcount " + charCount);
+       console.log("time left " + timer);
+      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / totalTime))); 
+       console.log("netwpm " + netWpm);
+
     }
     setWpm(netWpm);
   }
