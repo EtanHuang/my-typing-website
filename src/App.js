@@ -12,6 +12,7 @@ function App() {
   const testLength = 200;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
+  const [totalWordsTyped, setTotalWordsTyped] = useState(0);
   const [userInput, setUserInput] = useState(''); // user's input in the box, reset when pressed space bar 
   const [testActive, setTestActive] = useState(false); // true if test is running, false otherwise 
   const [correctCount, setCorrectCount] = useState(0);
@@ -21,6 +22,7 @@ function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [correct, setCorrect] = useState(false); //determines whether current user input matches current word 
   const [wpm, setWpm] = useState(0);
+
 
   useEffect(() => {
     let interval;
@@ -53,6 +55,7 @@ function App() {
     setIsRunning(false);
     setTestActive(false);
     setcurrentWordIndex(0);
+    setTotalWordsTyped(0);
     setCorrectCount(0);
     setWrongCount(0);
     setWpm(0);
@@ -64,20 +67,32 @@ function App() {
     generateWords();
   }, []);
 
+  let charCount = 0;
+
   function calculateWPM() {
-    let charCount = 0;
-    for (let i = 0; i < currentWordIndex; i++) {
+    let netWpm = 0;
+    let grossWpm = 0;
+    for (let i = 0; i < (totalWordsTyped % testLength); i++) {
       charCount += wordlist[i].length;
     }
-    charCount += currentWordIndex; // adds spaces. 
+
     // grosswpm = (all typed characters / 5) / time (min) 
     // netwpm = grosswpm - (wrong words / time (min))
-    let netWpm = 0;
     if (timer !== totalTime) { // prevents division by 0 
-      let grossWpm = Math.round(charCount / 5) / ((totalTime - timer) /  60);
-      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / 60))); 
+      grossWpm = Math.round(((charCount + totalWordsTyped) / 5) / ((totalTime - timer) /  totalTime));
+       console.log("gross wpm " + grossWpm);
+       console.log("charcount " + charCount);
+       console.log("time left " + timer);
+      netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / totalTime))); 
+       console.log("netwpm " + netWpm);
+
     }
-    setWpm(netWpm);
+    if (netWpm < 0) {
+      setWpm(0);
+    } 
+    else {
+      setWpm(netWpm);
+    }
   }
 
   function generateWords() {
@@ -136,14 +151,17 @@ function App() {
   }
 
   function handleSpace(e) {
-    // if(currentWordIndex === 200) {
-    //   setcurrentWordIndex(0);
-    // }
     if (userInput.trim() !== '' && e.key === ' ') { 
       e.preventDefault();
       setUserInput('');
       checkWord();
       setcurrentWordIndex(currentWordIndex + 1);
+      setTotalWordsTyped(totalWordsTyped + 1);
+    }    
+    //console.log(currentWordIndex);
+    if (currentWordIndex === testLength-1 && e.key === ' ') {
+      generateWords();
+      setcurrentWordIndex(0);
     }
   }
 
