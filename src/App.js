@@ -101,7 +101,7 @@ function App() {
             className = {wordClassName}>
         {word}
       </span>
-    );
+    ); 
   });
 
   let newerWordList = newWordList.map((element, index) => (
