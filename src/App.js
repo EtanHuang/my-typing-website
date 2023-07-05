@@ -12,6 +12,7 @@ function App() {
   const testLength = 200;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
+  const [totalWordsTyped, setTotalWordsTyped] = useState(0);
   const [userInput, setUserInput] = useState(''); // user's input in the box, reset when pressed space bar 
   const [testActive, setTestActive] = useState(false); // true if test is running, false otherwise 
   const [correctCount, setCorrectCount] = useState(0);
@@ -21,6 +22,7 @@ function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [correct, setCorrect] = useState(false); //determines whether current user input matches current word 
   const [wpm, setWpm] = useState(0);
+
 
   useEffect(() => {
     let interval;
@@ -53,6 +55,7 @@ function App() {
     setIsRunning(false);
     setTestActive(false);
     setcurrentWordIndex(0);
+    setTotalWordsTyped(0);
     setCorrectCount(0);
     setWrongCount(0);
     setWpm(0);
@@ -63,6 +66,8 @@ function App() {
   useEffect(() => {
     generateWords();
   }, []);
+
+  let charCount = 0;
 
   function calculateWPM() {
     let netWpm = 0;
@@ -107,7 +112,7 @@ function App() {
             className = {wordClassName}>
         {word}
       </span>
-    ); 
+    );
   });
 
   let newerWordList = newWordList.map((element, index) => (
@@ -142,14 +147,17 @@ function App() {
   }
 
   function handleSpace(e) {
-    // if(currentWordIndex === 200) {
-    //   setcurrentWordIndex(0);
-    // }
     if (userInput.trim() !== '' && e.key === ' ') { 
       e.preventDefault();
       setUserInput('');
       checkWord();
       setcurrentWordIndex(currentWordIndex + 1);
+      setTotalWordsTyped(totalWordsTyped + 1);
+    }    
+    //console.log(currentWordIndex);
+    if (currentWordIndex === testLength-1 && e.key === ' ') {
+      generateWords();
+      setcurrentWordIndex(0);
     }
   }
 
@@ -198,7 +206,6 @@ function App() {
           {newerWordList}     
           <InfoContainer /> 
         </div>  
-
       </div>    
       <div className = 'input-restart-container'>
           <input
@@ -211,7 +218,6 @@ function App() {
                 onKeyDown = {handleSpace}>
           </input>  
           <RestartButton className = 'restart-button' />
-
         </div> 
     </div> 
   );
