@@ -65,24 +65,25 @@ function App() {
   }, []);
 
   function calculateWPM() {
-    let charCount = 0;
-    for (let i = 0; i < currentWordIndex; i++) {
+    let netWpm = 0;
+    let grossWpm = 0;
+    for (let i = 0; i < (totalWordsTyped % testLength); i++) {
       charCount += wordlist[i].length;
     }
-    charCount += currentWordIndex; // adds spaces. 
+
     // grosswpm = (all typed characters / 5) / time (min) 
     // netwpm = grosswpm - (wrong words / time (min))
-    let netWpm = 0;
     if (timer !== totalTime) { // prevents division by 0 
       grossWpm = Math.round(((charCount + totalWordsTyped) / 5) / ((totalTime - timer) /  totalTime));
-       console.log("gross wpm " + grossWpm);
-       console.log("charcount " + charCount);
-       console.log("time left " + timer);
       netWpm = Math.round(grossWpm - (wrongCount / ((totalTime - timer) / totalTime))); 
-       console.log("netwpm " + netWpm);
 
     }
-    setWpm(netWpm);
+    if (netWpm < 0) {
+      setWpm(0);
+    } 
+    else {
+      setWpm(netWpm);
+    }
   }
 
   function generateWords() {
