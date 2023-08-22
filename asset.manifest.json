@@ -1,0 +1,13 @@
+{
+    "files": {
+      "main.css": "/my-typing-website/static/css/main.2e4c313c.css",
+      "main.js": "/my-typing-website/static/js/main.f8528c2e.js",
+      "index.html": "/my-typing-website/index.html",
+      "main.2e4c313c.css.map": "/my-typing-website/static/css/main.2e4c313c.css.map",
+      "main.f8528c2e.js.map": "/my-typing-website/static/js/main.f8528c2e.js.map"
+    },
+    "entrypoints": [
+      "static/css/main.2e4c313c.css",
+      "static/js/main.f8528c2e.js"
+    ]
+  }
