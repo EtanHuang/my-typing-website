@@ -3,6 +3,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  position: relative;
+  margin-top: 30px;
 }
 
 .text-box {
@@ -14,6 +16,19 @@
   border: 2px solid #ccc;
   outline: 20px solid white;
   margin: 0;
+}
+
+.login-text-box {
+  background-color: white;
+  width: 50%;
+  height: 400px;
+  padding: 30px;
+  border-radius: 20px;
+  border: 2px solid #ccc;
+  outline: 20px solid white;
+  margin: auto;
+  align-items: center;
+
 }
 
 .highlight {
@@ -75,4 +90,32 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  position: relative;
+}
+
+.nav {
+  background-color: #333;
+  color: white;
+  display: flex;
+  align-items: top;
+  padding-right: 50px;
+  list-style: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.nav a {
+  color: inherit;
+  padding: 10px;
+  text-decoration: none;
+  justify-content: right;
+  font-size: 20px;
+}
+
+.nav title {
+  justify-content: left;
+  font-size: 60px;
 }
