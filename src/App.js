@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Test from './pages/Test';
 import NavBar from './components/NavBar';
-import LoginPage from './pages/LoginPage';
+import Authentication from './pages/Authentication';
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       component = <Test />
       break
     case "/login":
-      component = <LoginPage />
+      component = <Authentication />
       break
   }
   return (

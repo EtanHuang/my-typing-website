@@ -11,7 +11,7 @@ const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture'
 
 function Test()  {
 
-  const totalTime = 60; //  
+  const totalTime = 60; 
   const testLength = 200;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
