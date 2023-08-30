@@ -7,8 +7,8 @@ import results from '../results'
 const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture', 'is', 'you', 'where', 'when'
 , 'state', 'me', 'how', 'open', 'sometimes', 'she', 'he', 'like', 'who', 'what', 'kind', 'develop', 'interest' 
 , 'without', 'number', 'time', 'end', 'start', 'increase', 'begin', 'but', 'look', 'book', 'picture', 'zebra', 'dog',
-'cat', 'animal', 'cube', 'laptop', 'how', 'is', 'but', 'far', 'far', 'far', 'found', 'should', 'part', 'how', 'basic', 
-'to', 'man', 'right', 'left', 'odd', 'even', 'our', 'us', 'even', 'go', 'go', 'go', 'been']
+'cat', 'animal', 'cube', 'laptop', 'how', 'is', 'but', 'far', 'far', 'found', 'should', 'part', 'how', 'basic', 
+'to', 'man', 'right', 'left', 'odd', 'even', 'our', 'us', 'even', 'go', 'go', 'been']
 
 function Test()  {
 
