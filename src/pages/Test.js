@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import '../App.css';
 import InfoContainer from '../components/InfoContainer';
 import axios from 'axios';
+import results from '../results'
 
 const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture', 'is', 'you', 'where', 'when'
 , 'state', 'me', 'how', 'open', 'sometimes', 'she', 'he', 'like', 'who', 'what', 'kind', 'develop', 'interest' 
@@ -11,7 +12,7 @@ const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture'
 
 function Test()  {
 
-  const totalTime = 60; 
+  const totalTime = 1; 
   const testLength = 200;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
@@ -48,9 +49,14 @@ function Test()  {
         wrongCount: wrongCount
       };
 
-      axios.post('https://typing-test-5bc1f-default-rtdb.firebaseio.com', JSON.stringify(testData)) 
+      results.post('/results.json', testData) 
         .then(response => {
-          console.log('Test data sent successfully:', response.data);
+          console.log('Test data sent successfully:', 
+          response.data, 
+          testData.wpm, 
+          testData.correctCount, 
+          testData.wrongCount
+          );
         })
         .catch(error => {
           console.error('Error sending test data:', error);

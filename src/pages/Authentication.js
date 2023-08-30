@@ -24,6 +24,7 @@ function Authentication() {
         .then((userCredential) => {
             const user = userCredential.user;
             console.log("Logged in as " + user.email);
+            console.log(user.auth().uid)
         })
         .catch((error) => {
             console.log(error);
