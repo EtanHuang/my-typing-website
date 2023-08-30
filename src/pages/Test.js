@@ -12,7 +12,7 @@ const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture'
 
 function Test()  {
 
-  const totalTime = 1; 
+  const totalTime = 60; 
   const testLength = 200;
   const [wordlist, setWordlist] = useState([]); // the current word list 
   const [currentWordIndex, setcurrentWordIndex] = useState(0); // current index of the word we are on 
@@ -28,49 +28,53 @@ function Test()  {
   const [wpm, setWpm] = useState(0);
 
 
-  useEffect(() => {
+  function postData() {
+    const testData = {
+      wpm: wpm,
+      correctCount: correctCount,
+      wrongCount: wrongCount
+    };
+
+    results.post('/results.json', testData) 
+      .then(response => {
+        console.log('Test data sent successfully:', 
+        response.data, 
+        testData
+        );
+      })
+      .catch(error => {
+        console.error('Error sending test data:', error);
+      });
+  }
+
+
+  useEffect(() => {  
     let interval;
     if (isRunning && timer > 0) {
-        interval = setInterval(() => {
+      interval = setInterval(() => {
         setTimer((timer) => timer - 1);
       }, 1000);
       calculateWPM();
     }
-
+  
     if (timer === 0) {
       setIsRunning(false);
       setTestActive(false);
       clearInterval(interval);
-      calculateWPM();
-
-      const testData = {
-        wpm: wpm,
-        correctCount: correctCount,
-        wrongCount: wrongCount
-      };
-
-      results.post('/results.json', testData) 
-        .then(response => {
-          console.log('Test data sent successfully:', 
-          response.data, 
-          testData.wpm, 
-          testData.correctCount, 
-          testData.wrongCount
-          );
-        })
-        .catch(error => {
-          console.error('Error sending test data:', error);
-        });
+      postData();
     }
-
+  
     return () => {
-      clearInterval(interval); // Clear the interval when the component unmounts
+      clearInterval(interval);
     };
-  }, [isRunning, timer]); // runs when isRunning changes from true to false and runs whenever timer decreases by 1 until 0
+  }, [timer]);
+
 
   const handleStart = () => {
     setIsRunning(true);
     setTestActive(true);
+    setTimer(totalTime+1);
+    setTimer(totalTime-1);
   };
 
   function handleRestart() {
