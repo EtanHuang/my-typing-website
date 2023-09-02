@@ -24,12 +24,17 @@ function Authentication() {
         .then((userCredential) => {
             const user = userCredential.user;
             console.log("Logged in as " + user.email);
-            console.log(user.auth().uid)
+            //console.log(user.auth().uid)
         })
         .catch((error) => {
             console.log(error);
         })
     };
+
+    const handleLogout = (e) => {
+        auth.signOut();
+        console.log("Logged out user");
+    }
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -52,6 +57,15 @@ function Authentication() {
           </button>
         )
       }
+
+    function LogoutButton() {
+        return (
+            <button onClick = {handleLogout}
+                  className = "logout-button">
+            Logout
+          </button>
+        )
+    }
 
     function RegisterButton() {
         return (
@@ -94,6 +108,7 @@ function Authentication() {
             {isLogin ?
                 (<div>
                 <LoginButton />
+                <LogoutButton />
                     <span onClick={(e) => {setIsLogin(false)
                                            setEmail("")
                                            setPassword("")}}>
