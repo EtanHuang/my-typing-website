@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
 import InfoContainer from '../components/InfoContainer';
-import axios from 'axios';
-import results from '../results'
+import { getDatabase, ref, set } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+//import currentUser  from "../c";
 
 const words = ['house', 'in', 'school', 'open', 'kind', 'been', 'saw', 'picture', 'is', 'you', 'where', 'when'
 , 'state', 'me', 'how', 'open', 'sometimes', 'she', 'he', 'like', 'who', 'what', 'kind', 'develop', 'interest' 
@@ -26,25 +27,45 @@ function Test()  {
   const [isRunning, setIsRunning] = useState(false);
   const [correct, setCorrect] = useState(false); //determines whether current user input matches current word 
   const [wpm, setWpm] = useState(0);
+  //const user = currentUser();
 
 
-  function postData() {
+  const [currentUser, setUser] = useState(null);
+
+  const auth = getAuth();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        console.log(user);
+        console.log(user.uid);
+      } else {
+        setUser(null);
+      }
+    });
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, [auth]);
+  
+
+  function postData(user) {
     const testData = {
       wpm: wpm,
       correctCount: correctCount,
       wrongCount: wrongCount
     };
 
-    results.post('/results.json', testData) 
-      .then(response => {
-        console.log('Test data sent successfully:', 
-        response.data, 
+    const db = getDatabase();
+    const userId = user.uid;
+    console.log(user);
+    try {
+      set(ref(db, 'users/' + userId), {
         testData
-        );
-      })
-      .catch(error => {
-        console.error('Error sending test data:', error);
       });
+    } catch(error) {
+      console.log("No user signed in");
+    }
   }
 
 
@@ -61,7 +82,7 @@ function Test()  {
       setIsRunning(false);
       setTestActive(false);
       clearInterval(interval);
-      postData();
+      postData(currentUser);
     }
   
     return () => {

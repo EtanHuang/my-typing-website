@@ -1,21 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import ReactDOM from "react-dom/client";
-import { Link, Routes, Route } from "react-router-dom";
+import { React, useState } from 'react';
 import "../App.css";
-import firebase from "../firebase"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 
 function NavBar() {
 
-    const [signedIn, setSignedIn] = useState(false);
+    const [signedIn, setSignedIn] = useState();
 
     const auth = getAuth();
+
     onAuthStateChanged(auth, (user) => {
     if (user) {
         const uid = user.uid;
         setSignedIn(true);
-        console.log("Signed in.")
+        //console.log("Signed in.");
+        //console.log(uid);
     } else {
         setSignedIn(false);
         console.log("Logged out.");
